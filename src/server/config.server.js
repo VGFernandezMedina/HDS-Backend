@@ -1,14 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
 
-require("../db/config.db");
+//require("../db/config.db");
 
 class Server {
   constructor(port) {
     this.port = process.env.PORT || port; // Toma el puerto del sistema o del index.
-    this.app = express();
-    this.middlewares();
-    this.routes();
+    this.app = express(); // Se ejecuta express y se crea automaticamente el servidor.
+    /*     this.middlewares();
+    this.routes(); */
   }
 
   middlewares() {
@@ -17,9 +17,9 @@ class Server {
     this.app.use(morgan("dev")); // Registra las peticiones HTTP en la consola.
   }
 
-  routes() {
+  /*   routes() {
     this.app.use("/api", require("../routes/index.routes")); // El api es el identificador de rutas backend.
-  }
+  } */
 
   listen() {
     this.app.listen(process.env.PORT, () => {
