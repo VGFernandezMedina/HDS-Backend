@@ -13,7 +13,7 @@ class Server {
 
   middlewares() {
     //middlewares de config.
-    this.app.use(express.json()); // Analiza el JSON y lo convierte en un objeto.
+    this.app.use(express.json()); // Analiza el JSON que ingresa al server y lo convierte en un objeto.
     this.app.use(morgan("dev")); // Registra las peticiones HTTP en la consola.
   }
 
