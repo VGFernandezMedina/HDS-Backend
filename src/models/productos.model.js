@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"); // Permite conectar y trabajar con MongoDB usando modelos.
+const mongoose = require("mongoose"); // ODM que funciona como middleware entre el Servidor y la BD que permite conectar y trabajar con MongoDB usando modelos.
 
 const ProductosSchema = new mongoose.Schema({
   nombre: {
