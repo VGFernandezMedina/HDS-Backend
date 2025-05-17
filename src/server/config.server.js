@@ -1,13 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 
-//require("../db/config.db");
+require("../db/config.db"); // Lo ejecutamos inmediatamente.
 
 class Server {
   constructor(port) {
     this.port = process.env.PORT || port; // Toma el puerto del sistema o del index.
     this.app = express(); // Se ejecuta express y se crea automaticamente el servidor.
-    this.middlewares();
+    this.middlewares(); // Los middlewares al ser funciones deben ser ejecutadas.
     this.routes();
   }
 
