@@ -30,15 +30,27 @@ const obtenerTodosLosProductosBD = async () => {
     producto,
     statusCode: 200,
   };
-};
-
-const crearProductoArray = (body) => {
-  const { nombre, precio, descripcion } = body;
-
-  return {};
 }; */
+
+const crearProductoBD = async (body) => {
+  try {
+    const nuevoProducto = new ProductosModel(body); // Se compara el modelo con el body, si son iguales lo crea, sino, sale el error
+    await nuevoProducto.save(); // Con el metodo de moongose "save()" lo guardamos en la BD
+
+    return {
+      msg: "El producto fue creado con exito", // Este mensaje saldrá en la BD.
+      statusCode: 201, // Se creó un nuevo recurso en el servidor.
+    };
+  } catch (error) {
+    return {
+      error,
+      statusCode: 500,
+    };
+  }
+};
 
 module.exports = {
   obtenerTodosLosProductosBD,
   /* obtenerUnProductoArray, */
+  crearProductoBD,
 };
