@@ -9,9 +9,9 @@ const {
 const router = express.Router(); // Llamamos y ejecutamos el método "Router()" de express y lo guardamos en "router".
 
 router.get("/", obtenerTodosLosProductos);
-/* router.get("/:id", obtenerUnProducto);
+/* router.get("/:id", obtenerUnProducto); */
 router.post("/", crearProducto);
-router.put("/:id", actualizarProducto);
+/* router.put("/:id", actualizarProducto);
 router.delete("/:id", borrarProducto); */
 
 module.exports = router;
