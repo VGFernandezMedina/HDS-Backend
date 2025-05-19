@@ -1,6 +1,8 @@
 const {
   obtenerTodosLosProductosBD,
-  obtenerUnProductoArray,
+  crearProductoBD,
+  obtenerUnProductoBD,
+  actualizarProductoBD,
 } = require("../services/productos.services");
 
 const obtenerTodosLosProductos = async (req, res) => {
@@ -13,18 +15,20 @@ const obtenerTodosLosProductos = async (req, res) => {
   }
 };
 
-/* const obtenerUnProducto = async (req, res) => {
-  const { statusCode, producto } = await obtenerUnProductoArray(req.params.id);
+const obtenerUnProducto = async (req, res) => {
+  const { statusCode, producto, msg } = await obtenerUnProductoBD(
+    req.params.id
+  ); // Se le envía a la funcion el ID.
 
   try {
-    res.status(statusCode).json({ producto });
+    res.status(statusCode).json(producto ? { producto } : { msg });
   } catch (error) {
     res.status(statusCode).json({ error });
   }
-}; */
+};
 
-/* const crearProducto = async (req, res) => {
-  const { statusCode, msg, error } = await
+const crearProducto = async (req, res) => {
+  const { statusCode, msg, error } = await crearProductoBD(req.body); // Se le envía a la funcion el BODY.
 
   try {
     res.status(statusCode).json({ msg });
@@ -33,17 +37,20 @@ const obtenerTodosLosProductos = async (req, res) => {
   }
 };
 
-const actualizarProducto = async (req, res) => {;
-  const { statusCode, msg, error } = await
+const actualizarProducto = async (req, res) => {
+  const { statusCode, msg, error } = await actualizarProductoBD(
+    req.params.id,
+    req.body
+  ); // Se le envía a la funcion el ID y el BODY.
 
   try {
     res.status(statusCode).json({ msg });
   } catch (error) {
     res.status(statusCode).json({ error });
-  }  
-}
+  }
+};
 
-const borrarProducto = async (req, res) => {;
+/* const borrarProducto = async (req, res) => {;
   const { statusCode, msg, error} = await
 
   try {
@@ -55,8 +62,8 @@ const borrarProducto = async (req, res) => {;
 
 module.exports = {
   obtenerTodosLosProductos,
-  /* obtenerUnProducto,
+  obtenerUnProducto,
   crearProducto,
   actualizarProducto,
-  borrarProducto, */
+  /*   borrarProducto, */
 };

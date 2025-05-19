@@ -24,21 +24,63 @@ const obtenerTodosLosProductosBD = async () => {
   }
 };
 
-/* const obtenerUnProductoArray = (idProducto) => {
-  const producto = productos.find((prod) => prod.id === Number(idProducto));
-  return {
-    producto,
-    statusCode: 200,
-  };
+const obtenerUnProductoBD = async (idProducto) => {
+  try {
+    const producto = await ProductosModel.findOne({ _id: idProducto }); // El findOne recibe un objeto, y la base de datos debemos pasarle su "_id" porque asi lo guarda
+    if (!producto) {
+      return {
+        msg: "ERROR. El producto no existe",
+        statusCode: 404,
+      };
+    }
+
+    return {
+      producto,
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      error,
+      statusCode: 599,
+    };
+  }
 };
 
-const crearProductoArray = (body) => {
-  const { nombre, precio, descripcion } = body;
+const crearProductoBD = async (body) => {
+  try {
+    const nuevoProducto = new ProductosModel(body); // Se compara el modelo con el body, si son iguales lo crea, sino, sale el error
+    await nuevoProducto.save(); // Con el metodo de moongose "save()" lo guardamos en la BD
 
-  return {};
-}; */
+    return {
+      msg: "El producto fue creado con exito", // Este mensaje saldrá en la BD.
+      statusCode: 201, // Se creó un nuevo recurso en el servidor.
+    };
+  } catch (error) {
+    return {
+      error,
+      statusCode: 500,
+    };
+  }
+};
+
+const actualizarProductoBD = async (idProducto, body) => {
+  try {
+    await ProductosModel.findByIdAndUpdate({ _id: idProducto }, body); // El método recibe primero el ID y el campo a actualizar.
+    return {
+      msg: "El producto se actualizó correctamente.",
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      error,
+      statusCode: 500,
+    };
+  }
+};
 
 module.exports = {
   obtenerTodosLosProductosBD,
-  /* obtenerUnProductoArray, */
+  obtenerUnProductoBD,
+  crearProductoBD,
+  actualizarProductoBD,
 };
