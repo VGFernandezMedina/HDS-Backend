@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  borrarProducto,
+  /*   borrarProducto, */
   actualizarProducto,
   crearProducto,
   obtenerUnProducto,
@@ -11,7 +11,7 @@ const router = express.Router(); // Llamamos y ejecutamos el método "Router()" 
 router.get("/", obtenerTodosLosProductos);
 router.get("/:id", obtenerUnProducto);
 router.post("/", crearProducto);
-/* router.put("/:id", actualizarProducto);
-router.delete("/:id", borrarProducto); */
+router.put("/:id", actualizarProducto);
+/* router.delete("/:id", borrarProducto); */
 
 module.exports = router;
