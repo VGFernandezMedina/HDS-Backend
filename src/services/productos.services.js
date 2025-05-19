@@ -78,9 +78,35 @@ const actualizarProductoBD = async (idProducto, body) => {
   }
 };
 
+const borrarProductoBD = async (idProducto) => {
+  try {
+    const producto = await ProductosModel.findOne({ _id: idProducto });
+
+    if (!producto) {
+      return {
+        msg: "ERROR. El producto no existe",
+        statusCode: 404, // El servidor no puede encontrar el recurso solicitado.
+      };
+    }
+    // Primero obtenemos el producto para poder retornar el mensaje de error si es que el producto existe o no.
+
+    await ProductosModel.findByIdAndDelete({ _id: idProducto }); // Buscamos y borramos el producto.
+    return {
+      msg: "El producto se borró correctamente",
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      error,
+      statusCode: 500,
+    };
+  }
+};
+
 module.exports = {
   obtenerTodosLosProductosBD,
   obtenerUnProductoBD,
   crearProductoBD,
   actualizarProductoBD,
+  borrarProductoBD,
 };
