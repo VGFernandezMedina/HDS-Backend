@@ -24,13 +24,27 @@ const obtenerTodosLosProductosBD = async () => {
   }
 };
 
-/* const obtenerUnProductoArray = (idProducto) => {
-  const producto = productos.find((prod) => prod.id === Number(idProducto));
-  return {
-    producto,
-    statusCode: 200,
-  };
-}; */
+const obtenerUnProductoBD = async (idProducto) => {
+  try {
+    const producto = await ProductosModel.findOne({ _id: idProducto }); // El findOne recibe un objeto, y la base de datos debemos pasarle su "_id" porque asi lo guarda
+    if (!producto) {
+      return {
+        msg: "ERROR. El producto no existe",
+        statusCode: 404,
+      };
+    }
+
+    return {
+      producto,
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      error,
+      statusCode: 599,
+    };
+  }
+};
 
 const crearProductoBD = async (body) => {
   try {
@@ -51,6 +65,6 @@ const crearProductoBD = async (body) => {
 
 module.exports = {
   obtenerTodosLosProductosBD,
-  /* obtenerUnProductoArray, */
+  obtenerUnProductoBD,
   crearProductoBD,
 };

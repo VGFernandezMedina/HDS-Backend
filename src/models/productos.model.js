@@ -12,17 +12,17 @@ const ProductosSchema = new mongoose.Schema({
   },
   precio: {
     type: Number,
-    required: true,
+    required: true, // Campo es obligatorio.
   },
   imagen: {
     type: String,
     trim: true,
-    required: true,
+    required: true, // Campo es obligatorio.
   },
   descripcion: {
     type: String,
     trim: true,
-    required: true,
+    required: true, // Campo es obligatorio.
   },
   estado: {
     type: String,
