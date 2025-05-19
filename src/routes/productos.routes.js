@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  /*   borrarProducto, */
+  borrarProducto,
   actualizarProducto,
   crearProducto,
   obtenerUnProducto,
@@ -12,6 +12,6 @@ router.get("/", obtenerTodosLosProductos);
 router.get("/:id", obtenerUnProducto);
 router.post("/", crearProducto);
 router.put("/:id", actualizarProducto);
-/* router.delete("/:id", borrarProducto); */
+router.delete("/:id", borrarProducto);
 
 module.exports = router;
