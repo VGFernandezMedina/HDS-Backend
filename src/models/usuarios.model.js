@@ -4,7 +4,7 @@ const UsuariosSchema = new Schema({
   nombreUsuario: {
     type: String,
     trim: true, // Saca los espacios en blanco de adelante y atras.
-    require: true,
+    required: true,
     unique: true, // El valor no se puede repetir en los documentos de esa colección.
     lowerCase: true, // Convierta automáticamente el valor de ese campo a minúsculas antes de guardarlo en la base de datos.
     maxLength: [30, "Límite máximo de 30 caracteres."],
