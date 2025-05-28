@@ -3,6 +3,7 @@ const {
   crearProductoBD,
   obtenerUnProductoBD,
   actualizarProductoBD,
+  borrarProductoBD,
 } = require("../services/productos.services");
 
 const obtenerTodosLosProductos = async (req, res) => {
@@ -18,7 +19,7 @@ const obtenerTodosLosProductos = async (req, res) => {
 const obtenerUnProducto = async (req, res) => {
   const { statusCode, producto, msg } = await obtenerUnProductoBD(
     req.params.id
-  ); // Se le envía a la funcion el ID.
+  ); // Se le envía a la funcion del servicio el ID.
 
   try {
     res.status(statusCode).json(producto ? { producto } : { msg });
@@ -28,7 +29,7 @@ const obtenerUnProducto = async (req, res) => {
 };
 
 const crearProducto = async (req, res) => {
-  const { statusCode, msg, error } = await crearProductoBD(req.body); // Se le envía a la funcion el BODY.
+  const { statusCode, msg, error } = await crearProductoBD(req.body); // Se le envía a la funcion del servicio el BODY.
 
   try {
     res.status(statusCode).json({ msg });
@@ -41,7 +42,7 @@ const actualizarProducto = async (req, res) => {
   const { statusCode, msg, error } = await actualizarProductoBD(
     req.params.id,
     req.body
-  ); // Se le envía a la funcion el ID y el BODY.
+  ); // Se le envía a la funcion del servicio el ID y el BODY.
 
   try {
     res.status(statusCode).json({ msg });
@@ -50,20 +51,20 @@ const actualizarProducto = async (req, res) => {
   }
 };
 
-/* const borrarProducto = async (req, res) => {;
-  const { statusCode, msg, error} = await
+const borrarProducto = async (req, res) => {
+  const { statusCode, msg, error } = await borrarProductoBD(req.params.id); // Se le envía a la función del servicio el ID
 
   try {
     res.status(statusCode).json({ msg });
   } catch (error) {
     res.status(statusCode).json({ error });
   }
-} */
+};
 
 module.exports = {
   obtenerTodosLosProductos,
   obtenerUnProducto,
   crearProducto,
   actualizarProducto,
-  /*   borrarProducto, */
+  borrarProducto,
 };
