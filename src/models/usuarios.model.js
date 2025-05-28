@@ -48,5 +48,16 @@ const UsuariosSchema = new Schema({
   },
 });
 
+// 3° METODO para evitar enviar la contraseña al front.
+
+UsuariosSchema.methods.toJSON = function () {
+  const { contrasenia, ...usuario } = this.toObject();
+  return usuario;
+};
+
+//methods = atributo del Schema
+//toJSON propiedad de methods: convierte el objeto en texto plano y extrae las propiedades que no queremos enviar en la respuesta.
+//toObject() metodo de JS: a cada objeto lo transforma a JSON y le quita la contraseña y con spreed operator lo guarda en una nueva variable en este caso usuario.
+
 const UsuariosModel = model("usuarios", UsuariosSchema);
 module.exports = UsuariosModel;
