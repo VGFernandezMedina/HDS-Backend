@@ -9,20 +9,23 @@ const {
   bajaLogicaDelUsuario,
   bajaFisicaDelUsuario,
 } = require("../controllers/usuarios.controllers");
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
+
+/* Roles: admin, usuario y todos */
 
 router.post("/login", iniciarSesionUsuario);
 router.post("/register", registrarUsuario);
 
-router.get("/", obtenerTodosLosUsuarios);
-router.get("/:id", obtenerUnUsuario);
+router.get("/", auth("admin"), obtenerTodosLosUsuarios);
+router.get("/:id", auth("admin"), obtenerUnUsuario);
 
-router.put("/:id", actualizarUnUsuario);
+router.put("/:id", auth(["admin", "usuario"]), actualizarUnUsuario);
 
-router.put("/enabled/:id", altaLogicaDelUsuario);
-router.put("/disabled/:id", bajaLogicaDelUsuario);
+router.put("/enabled/:id", auth("admin"), altaLogicaDelUsuario);
+router.put("/disabled/:id", auth("admin"), bajaLogicaDelUsuario);
 
-router.delete("/:id", bajaFisicaDelUsuario);
+router.delete("/:id", auth("admin"), bajaFisicaDelUsuario);
 
 module.exports = router;
