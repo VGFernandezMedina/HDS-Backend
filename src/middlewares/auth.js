@@ -10,6 +10,11 @@ module.exports = (rolRuta) => (req, res, next) => {
     verificarToken.rolUsuario === rolRuta ||
     rolRuta.includes(verificarToken.rolUsuario)
   ) {
+    // Pasamos por el token estos 3 datos para que esten vinculados uno con el otro.
+    req.idUsuario = verificarToken.idUsuario;
+    req.idCarrito = verificarToken.idCarrito;
+    req.idFavoritos = verificarToken.idFavoritos;
+
     next(); // Ejecuta el controlador.
   } else {
     res.status(401).json("No estás autorizado para recibir esta información");

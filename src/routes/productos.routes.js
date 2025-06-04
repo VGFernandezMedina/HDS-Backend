@@ -1,4 +1,6 @@
-const express = require("express");
+const { Router } = require("express");
+const router = Router(); // Llamamos y ejecutamos el método "Router()" de express y lo guardamos en "router".
+const auth = require("../middlewares/auth");
 const {
   borrarProducto,
   actualizarProducto,
@@ -6,8 +8,6 @@ const {
   obtenerUnProducto,
   obtenerTodosLosProductos,
 } = require("../controllers/productos.controllers");
-const auth = require("../middlewares/auth");
-const router = express.Router(); // Llamamos y ejecutamos el método "Router()" de express y lo guardamos en "router".
 
 /* Roles: admin, usuario y todos */
 
