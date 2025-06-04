@@ -1,11 +1,21 @@
 const UsuariosModel = require("../models/usuarios.model");
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
+const CarritosModel = require("../models/carritos.model");
+const FavoritosModel = require("../models/favoritos.model");
 
 const registrarUsuarioBD = async (body) => {
   try {
     const nuevoUsuario = new UsuariosModel(body);
+    const nuevoCarrito = new CarritosModel({ idUsuario: nuevoUsuario._id });
+    const nuevoFavoritos = new FavoritosModel({ idUsuario: nuevoUsuario._id });
+
     nuevoUsuario.contrasenia = await argon.hash(body.contrasenia); // Hasheamos la contraseña que viene de req.body.
+    nuevoUsuario.idCarrito = nuevoCarrito._id; // Vinculamos el Carrito con el usuario
+    nuevoUsuario.idFavoritos = nuevoFavoritos._id; // Vinculamos los Favoritos con el usuario
+
+    await nuevoCarrito.save(); // Guardamos el carrito creado.
+    await nuevoFavoritos.save(); // Guardamos los favoritos creados.
     await nuevoUsuario.save(); // Guardamos el usuario creado.
     return {
       msg: "Usuario creado con éxito",
@@ -45,7 +55,11 @@ const iniciarSesionUsuarioBD = async (body) => {
     ); //con verify verificamos si la contrasenia guardada en BD es igual a la que viene del Front.
     if (verificarContrasenia) {
       const payload = {
+        // El payload es la información util del usuario
+        // Con el ID del usuario ya puedo sacar el ID de carrito y favorito, pero pasandolo por el PAYLOAD me ahorro el trabajo de hacer otra consulta por esos mismos datos.
         idUsuario: usuarioExiste._id,
+        idCarrito: usuarioExiste.idCarrito,
+        idFavoritos: usuarioExiste.idFavoritos,
         rolUsuario: usuarioExiste.rol,
       };
 

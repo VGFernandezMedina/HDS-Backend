@@ -1,4 +1,6 @@
-const express = require("express");
+const { Router } = require("express");
+const router = Router();
+const auth = require("../middlewares/auth");
 const {
   iniciarSesionUsuario,
   registrarUsuario,
@@ -9,9 +11,6 @@ const {
   bajaLogicaDelUsuario,
   bajaFisicaDelUsuario,
 } = require("../controllers/usuarios.controllers");
-const auth = require("../middlewares/auth");
-
-const router = express.Router();
 
 /* Roles: admin, usuario y todos */
 
