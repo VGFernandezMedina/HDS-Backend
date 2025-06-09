@@ -3,6 +3,7 @@ const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const CarritosModel = require("../models/carritos.model");
 const FavoritosModel = require("../models/favoritos.model");
+/* const { validationResult } = require("express-validator"); */
 
 const registrarUsuarioBD = async (body) => {
   try {
@@ -101,16 +102,27 @@ const obtenerTodosLosUsuariosBD = async () => {
 };
 
 const obtenerUnUsuarioBD = async (idUsuario) => {
+  /* VALIDACION DE DATOS */
+  /*   const errorValidator = validationResult(req); 
+  if (!errorValidator.isEmpty()) {
+    return {
+      msg: errorValidator.array(),
+      statusCode: 422, 
+    };
+  } */
+
   try {
     const usuario = await UsuariosModel.findOne({ _id: idUsuario }); /* .select(
       "-contrasenia -__v"
-    ) */ // Sacamos estas propiedades del usuario de la respuesta que va al front.
+      ) */ // Sacamos estas propiedades del usuario de la respuesta que va al front.
+
     if (!usuario) {
       return {
         msg: "El Usuario que busca no existe",
         statusCode: 404,
       };
     }
+
     return {
       usuario,
       statusCode: 200,

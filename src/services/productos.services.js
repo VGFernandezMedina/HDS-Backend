@@ -1,12 +1,3 @@
-/* const productos = [
-  {
-    id: 1,
-    nombre: "Coca-Cola",
-    precio: 4000,
-    descripcion: "La mejor gaseosa del mundo",
-  },
-]; */
-
 const ProductosModel = require("../models/productos.model");
 
 const obtenerTodosLosProductosBD = async () => {

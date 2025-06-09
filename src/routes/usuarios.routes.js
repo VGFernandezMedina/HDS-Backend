@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const auth = require("../middlewares/auth");
+const { check } = require("express-validator");
+const validateFields = require("../middlewares/validateFields");
 const {
   iniciarSesionUsuario,
   registrarUsuario,
@@ -12,19 +14,114 @@ const {
   bajaFisicaDelUsuario,
 } = require("../controllers/usuarios.controllers");
 
-/* Roles: admin, usuario y todos */
+/* Roles: admin, usuario y publico */
 
-router.post("/login", iniciarSesionUsuario);
-router.post("/register", registrarUsuario);
+// LOGIN
+router.post(
+  "/login",
+  [
+    check("nombreUsuario", "ERROR. El campo USUARIO está vacío").notEmpty(), // Si el campo está completo no retorna el mensaje de error.
+    check("contrasenia", "ERROR. El campo CONTRASENIA está vacío").notEmpty(),
+    check(
+      "contrasenia",
+      "ERROR. El número de carácteres permitidos en la CONTRASEÑA debe ser mayor a 5"
+    ).isLength({ min: 5 }),
+  ],
+  validateFields,
+  iniciarSesionUsuario
+);
+// REGISTER
+router.post(
+  "/register",
+  [
+    check("nombreUsuario", "ERROR. El campo USUARIO está vacío").notEmpty(), // Si el campo está completo no retorna el mensaje de error.
+    check(
+      "nombreUsuario",
+      "ERROR. El número de carácteres permitidos en el NOMBRE es entre 3 y 30"
+    ).isLength({ min: 3 }, { max: 30 }),
+    check("emailUsuario", "ERROR. El campo EMAIL está vacío").notEmpty(),
+    check(
+      "emailUsuario",
+      "ERROR. El formato de EMAIL ingresado es incorrecto"
+    ).isEmail(),
+    check("contrasenia", "ERROR. El campo CONTRASEÑA está vacío").notEmpty(),
+    check(
+      "contrasenia",
+      "ERROR. El número de carácteres permitidos en la CONTRASEÑA debe ser mayor a 5"
+    ).isLength({ min: 5 }),
+  ],
+  validateFields,
+  registrarUsuario
+);
 
 router.get("/", auth("admin"), obtenerTodosLosUsuarios);
-router.get("/:id", auth("admin"), obtenerUnUsuario);
+// OBTENER UN USUARIO
+router.get(
+  "/:id",
+  [
+    check(
+      "id",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+    ).isMongoId(),
+  ],
+  auth("admin"),
+  validateFields,
+  obtenerUnUsuario
+);
 
-router.put("/:id", auth(["admin", "usuario"]), actualizarUnUsuario);
+// ACTUALIZAR UN USUARIO
+router.put(
+  "/:id",
+  [
+    check(
+      "id",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+    ).isMongoId(),
+  ],
+  auth(["admin", "usuario"]),
+  validateFields,
+  actualizarUnUsuario
+);
 
-router.put("/enabled/:id", auth("admin"), altaLogicaDelUsuario);
-router.put("/disabled/:id", auth("admin"), bajaLogicaDelUsuario);
+// ALTA LOGICA.
+router.put(
+  "/enabled/:id",
+  [
+    check(
+      "id",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+    ).isMongoId(),
+  ],
+  auth("admin"),
+  validateFields,
+  altaLogicaDelUsuario
+);
+// BAJA LOGICA
+router.put(
+  "/disabled/:id",
+  [
+    check(
+      "id",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+    ).isMongoId(),
+  ],
+  auth("admin"),
+  validateFields,
+  bajaLogicaDelUsuario
+);
 
-router.delete("/:id", auth("admin"), bajaFisicaDelUsuario);
+// BAJA FISICA
+router.delete(
+  "/:id",
+  [
+    check(
+      "id",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+    ).isMongoId(),
+  ],
+  auth("admin"),
+  validateFields,
+  bajaFisicaDelUsuario
+);
 
 module.exports = router;
