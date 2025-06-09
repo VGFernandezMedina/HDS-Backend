@@ -39,7 +39,9 @@ const obtenerTodosLosUsuarios = async (req, res) => {
 };
 
 const obtenerUnUsuario = async (req, res) => {
-  const { statusCode, usuario, msg } = await obtenerUnUsuarioBD(req.params.id);
+  const { statusCode, usuario, msg, error } = await obtenerUnUsuarioBD(
+    req.params.id
+  );
   try {
     res.status(statusCode).json(usuario ? { usuario } : { msg });
   } catch (error) {
