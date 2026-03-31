@@ -1,6 +1,7 @@
 const mongoose = require("mongoose"); // ODM que funciona como middleware entre el Servidor y la BD que permite conectar y trabajar con MongoDB usando modelos.
 
 const ProductosSchema = new mongoose.Schema({
+  // El schema compara los valores que mandan del frontend
   nombre: {
     type: String, // Tipo de dato
     lowerCase: true, // Convierta automáticamente el valor de ese campo a minúsculas antes de guardarlo en la base de datos.

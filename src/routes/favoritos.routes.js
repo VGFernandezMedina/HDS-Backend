@@ -16,26 +16,26 @@ router.put(
   "/agregarProducto/:idProducto",
   [
     check(
-      "id",
-      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+      "idProducto",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose",
     ).isMongoId(),
   ],
   auth("usuario"),
   validateFields,
-  agregarProductoFavoritos
+  agregarProductoFavoritos,
 );
 // ELIMINAR PRODUCTO
 router.put(
   "/eliminarProducto/:idProducto",
   [
     check(
-      "id",
-      "ERROR. ID incorrecto. El formato no corresponde a mongoose"
+      "idProducto",
+      "ERROR. ID incorrecto. El formato no corresponde a mongoose",
     ).isMongoId(),
   ],
   auth("usuario"),
   validateFields,
-  eliminarProductoFavoritos
+  eliminarProductoFavoritos,
 );
 
 module.exports = router;

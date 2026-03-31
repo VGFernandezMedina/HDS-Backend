@@ -32,7 +32,7 @@ const obtenerUnProductoBD = async (idProducto) => {
   } catch (error) {
     return {
       error,
-      statusCode: 599,
+      statusCode: 500,
     };
   }
 };
