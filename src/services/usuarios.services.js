@@ -18,7 +18,7 @@ const registrarUsuarioBD = async (body) => {
 
     const { info, rejected } = await registroExitoso(
       nuevoUsuario.emailUsuario,
-      nuevoUsuario.nombreUsuario
+      nuevoUsuario.nombreUsuario,
     );
 
     if (info && !rejected.length) {
@@ -66,7 +66,7 @@ const iniciarSesionUsuarioBD = async (body) => {
 
     const verificarContrasenia = await argon.verify(
       usuarioExiste.contrasenia,
-      body.contrasenia
+      body.contrasenia,
     ); //con verify verificamos si la contrasenia guardada en BD es igual a la que viene del Front.
     if (verificarContrasenia) {
       const payload = {
@@ -198,9 +198,9 @@ const bajaLogicaDelUsuarioBD = async (idUsuario) => {
   }
 };
 
-const bajaFisicaDelUsuarioBD = async (idProducto) => {
+const bajaFisicaDelUsuarioBD = async (idUsuario) => {
   try {
-    const usuario = await UsuariosModel.findOne({ _id: idProducto });
+    const usuario = await UsuariosModel.findOne({ _id: idUsuario });
 
     if (!usuario) {
       return {
@@ -208,7 +208,7 @@ const bajaFisicaDelUsuarioBD = async (idProducto) => {
         statusCode: 404,
       };
     }
-    await UsuariosModel.findByIdAndDelete({ _id: idProducto });
+    await UsuariosModel.findByIdAndDelete({ _id: idUsuario });
     return {
       msg: "Usuario eliminado correctamente",
       statusCode: 200,

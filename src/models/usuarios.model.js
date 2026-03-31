@@ -7,7 +7,7 @@ const UsuariosSchema = new Schema({
     required: true,
     unique: true, // El valor no se puede repetir en los documentos de esa colección.
     lowerCase: true, // Convierta automáticamente el valor de ese campo a minúsculas antes de guardarlo en la base de datos.
-    maxLength: [30, "Límite máximo de 30 caracteres."],
+    maxLength: [30, "Límite máximo de 30 caracteres."], // Si se supera el limite marcado, en consola se muestra el mensaje de error
     minLength: [3, "Límite mínimo de 3 caracteres."],
   },
   emailUsuario: {

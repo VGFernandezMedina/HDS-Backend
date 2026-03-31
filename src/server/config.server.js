@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 require("../db/config.db"); // Lo ejecutamos inmediatamente.
 
@@ -14,6 +15,7 @@ class Server {
   middlewares() {
     //middlewares de config.
     this.app.use(express.json()); // Analiza el JSON que ingresa al server y lo convierte en un objeto.
+    this.app.use(cors()); // Pasa una cabecera con toda la configuracion necesario que habilita la información cruzada con otros puertos.
     this.app.use(morgan("dev")); // Registra las peticiones HTTP en la consola.
   }
 
