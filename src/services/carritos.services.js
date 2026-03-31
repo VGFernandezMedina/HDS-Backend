@@ -3,7 +3,7 @@ const ProductosModel = require("../models/productos.model");
 
 const obtenerProductosDelCarritoBD = async (idCarrito) => {
   try {
-    const carrito = await CarritosModel.findById({ _id: idCarrito });
+    const carrito = await CarritosModel.findById(idCarrito);
     return {
       productos: carrito.productos,
       statusCode: 200,
@@ -20,11 +20,11 @@ const agregarProductoCarritoBD = async (idCarrito, idProducto) => {
   try {
     const carrito = await CarritosModel.findOne({ _id: idCarrito });
     const producto = await ProductosModel.findOne({ _id: idProducto });
+    console.log(producto);
 
     const productoExisteCarrito = carrito.productos.find(
-      (prod) => prod._id.toString() === idProducto.toString()
+      (prod) => prod._id.toString() === idProducto.toString(),
     ); // "Busca en el array de productos un  _id convertido a string sea igual al idProducto recibido (también convertido a string). Ya que el prod._id probablemente sea un ObjectId de Mongoose, no una cadena.
-
     if (productoExisteCarrito) {
       // Evite que se repita el mismo producto en el carrito.
       return {
@@ -52,7 +52,7 @@ const eliminarProductoCarritoBD = async (idCarrito, idProducto) => {
   try {
     const carrito = await CarritosModel.findOne({ _id: idCarrito });
     const productoIndex = carrito.productos.findIndex(
-      (prod) => prod._id.toString() === idProducto.toString()
+      (prod) => prod._id.toString() === idProducto.toString(),
     );
 
     if (productoIndex < 0) {

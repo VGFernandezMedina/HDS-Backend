@@ -3,6 +3,7 @@ const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const CarritosModel = require("../models/carritos.model");
 const FavoritosModel = require("../models/favoritos.model");
+const { registroExitoso } = require("../utils/messages.nodemailer.utils");
 /* const { validationResult } = require("express-validator"); */
 
 const registrarUsuarioBD = async (body) => {
@@ -15,13 +16,26 @@ const registrarUsuarioBD = async (body) => {
     nuevoUsuario.idCarrito = nuevoCarrito._id; // Vinculamos el Carrito con el usuario
     nuevoUsuario.idFavoritos = nuevoFavoritos._id; // Vinculamos los Favoritos con el usuario
 
-    await nuevoCarrito.save(); // Guardamos el carrito creado.
-    await nuevoFavoritos.save(); // Guardamos los favoritos creados.
-    await nuevoUsuario.save(); // Guardamos el usuario creado.
-    return {
-      msg: "Usuario creado con éxito",
-      statusCode: 201,
-    };
+    const { info, rejected } = await registroExitoso(
+      nuevoUsuario.emailUsuario,
+      nuevoUsuario.nombreUsuario,
+    );
+
+    if (info && !rejected.length) {
+      await nuevoCarrito.save();
+      await nuevoFavoritos.save();
+      await nuevoUsuario.save();
+
+      return {
+        msg: "Usuario registrado con éxito",
+        statusCode: 201,
+      };
+    } else {
+      return {
+        msg: "ERROR. al intentar crear el usuario",
+        statusCode: 422,
+      };
+    }
   } catch (error) {
     console.log(error);
     return {
@@ -52,7 +66,7 @@ const iniciarSesionUsuarioBD = async (body) => {
 
     const verificarContrasenia = await argon.verify(
       usuarioExiste.contrasenia,
-      body.contrasenia
+      body.contrasenia,
     ); //con verify verificamos si la contrasenia guardada en BD es igual a la que viene del Front.
     if (verificarContrasenia) {
       const payload = {
@@ -184,9 +198,9 @@ const bajaLogicaDelUsuarioBD = async (idUsuario) => {
   }
 };
 
-const bajaFisicaDelUsuarioBD = async (idProducto) => {
+const bajaFisicaDelUsuarioBD = async (idUsuario) => {
   try {
-    const usuario = await UsuariosModel.findOne({ _id: idProducto });
+    const usuario = await UsuariosModel.findOne({ _id: idUsuario });
 
     if (!usuario) {
       return {
@@ -194,7 +208,7 @@ const bajaFisicaDelUsuarioBD = async (idProducto) => {
         statusCode: 404,
       };
     }
-    await UsuariosModel.findByIdAndDelete({ _id: idProducto });
+    await UsuariosModel.findByIdAndDelete({ _id: idUsuario });
     return {
       msg: "Usuario eliminado correctamente",
       statusCode: 200,
